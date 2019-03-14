@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/GeekHunters/v15/Server/sqlite3
+/.vs/GeekHunters/v15
+/GeekHunters/bin/Debug/netcoreapp2.2
+/GeekHunters/obj
