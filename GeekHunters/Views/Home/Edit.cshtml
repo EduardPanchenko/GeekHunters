@@ -1,0 +1,25 @@
+﻿@model IEnumerable<GeekHunters.Models.Skill>
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<h3>Editing skills by default, and filter</h3>
+
+<table class="table">
+    <tr style="font-weight:bold"><td>Skill name</td><td>Filter</td><td>Action</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Filter</td>
+            <td>
+                <a asp-action="Reverse" asp-controller="Home"
+                   asp-route-id="@item.SkillId">Reverse</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

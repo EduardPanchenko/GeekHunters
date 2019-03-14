@@ -1,0 +1,22 @@
+﻿@model IEnumerable<GeekHunters.Models.Candidate>
+@{
+    ViewBag.Title = "Candidates";
+}
+<h5>
+    Skill filter:&emsp;
+    @ViewBag.Skils&emsp;
+    <a asp-action="Create">Add candidate</a>&emsp;
+    <a asp-action="Edit">Edit filter</a>
+</h5>
+<table class="table">
+    <tr style="font-weight:bold"><td>First name</td><td>Last name</td><td>Skills</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Skills</td>
+            <td><a asp-action="Delete" asp-controller="Home" asp-route-id="@item.CandidateId">Delete</a></td>
+        </tr>
+    }
+</table>
