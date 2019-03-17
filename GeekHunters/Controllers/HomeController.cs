@@ -65,10 +65,10 @@ namespace GeekHunters.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            Candidate cd;
-            if (id == null || (cd = await db.Candidate.FindAsync(id)) == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
+            var cd = new Candidate { CandidateId = (int)id };
+            db.Attach(cd);
             db.Remove(cd);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
