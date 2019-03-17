@@ -78,12 +78,18 @@ namespace GeekHunters.Controllers
 
         public async Task<IActionResult> Reverse(int? id)
         {
-            Skill sk;
-            if (id == null || (sk = await db.Skill.FindAsync(id)) == null)
-                return NotFound();
+            //Skill sk;
+            //if (id == null || (sk = await db.Skill.FindAsync(id)) == null)
+            //    return NotFound();
 
-            sk.Filter = !sk.Filter;
-            await db.SaveChangesAsync();
+            //sk.Filter = !sk.Filter;
+            //await db.SaveChangesAsync();
+
+            if (id == null) return NotFound();
+
+            var res = await db.Database.ExecuteSqlCommandAsync( //must be 1
+                "update Skill set Filter = (Filter + 1) & 1 where SkillId = {0}", id);
+
             return RedirectToAction("Edit");
         }
     }

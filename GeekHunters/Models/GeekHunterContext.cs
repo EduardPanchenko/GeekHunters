@@ -12,6 +12,11 @@ namespace GeekHunters.Models
         public GeekHunterContext(DbContextOptions<GeekHunterContext> options)
             : base(options)
         {
+            InitDb();
+        }
+
+        private void InitDb()
+        {
             //Database.EnsureDeleted();
             Database.EnsureCreated();
 
@@ -26,7 +31,7 @@ namespace GeekHunters.Models
             var cd2 = new Candidate { FirstName = "Tyrion", LastName = "Lannister" };
             Add(cd1);
             Add(cd2);
-            
+
             sk = sk.Skip(1).ToArray();
             AddRange(sk.Where((_, i) => (i & 1) == 0)
                 .Select(x => new CandidateSkill { Candidate = cd1, Skill = x }));
