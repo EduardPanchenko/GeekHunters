@@ -47,7 +47,7 @@ namespace GeekHunters
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
             //app.UseCookiePolicy();
 
             app.UseMvc(routes =>
