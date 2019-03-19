@@ -14,7 +14,9 @@
             <td>@item.Filter</td>
             <td>
                 <a asp-action="Reverse" asp-controller="Home"
-                   asp-route-id="@item.SkillId">Reverse</a>
+                   asp-route-id="@item.SkillId"
+                   asp-route-name="@item.Name"
+                   asp-route-filter="@item.Filter">Reverse</a>
             </td>
         </tr>
     }
