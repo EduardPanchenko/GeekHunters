@@ -14,31 +14,35 @@ namespace GeekHunters.Controllers
 
         public HomeController(GeekHunterContext context) => db = context;
 
+        public const int AllSkills = 1;
+
         public async Task<IActionResult> Index()
         {
-            var cd = await db.Candidate
+            var candidates = await db.Candidate
                 .Include(e => e.CandidateSkill)
                 .ThenInclude(e => e.Skill)
                 .ToListAsync();
 
-            var sk = await db.Skill
+            var skills = await db.Skill
                 .Where(x => x.Filter)
                 .ToListAsync();
 
-            ViewBag.Skils = string.Join(", ", sk.Select(x => x.Name));
+            ViewBag.Skils = string.Join(", ", skills.Select(x => x.Name));
 
-            var si = sk.Select(k => k.SkillId).ToArray();
-            return View(si.Contains(1) ? cd :
-                cd.Where(x => !si.Except(x.CandidateSkill
+            var ids = skills.Select(k => k.SkillId).ToArray();
+            return View(ids.Contains(AllSkills) ? candidates :
+                //selection of candidates with the necessary skills
+                candidates.Where(x => !ids.Except(x.CandidateSkill
                 .Select(s => s.SkillId)).Any()).ToList());
         }
 
         public async Task<IActionResult> Create()
         {
-            var sk = await db.Skill
-                .Where(x => x.SkillId != 1 && x.Filter)
+            var skills = await db.Skill
+                .Where(x => x.SkillId != AllSkills && x.Filter)
                 .ToListAsync();
-            ViewBag.Skils = string.Join(", ", sk.Select(x => x.Name));
+            ViewBag.Skills = string.Join(", ", skills.Select(x => x.Name));
+
             return View();
         }
 
@@ -49,11 +53,11 @@ namespace GeekHunters.Controllers
                 return View();
 
             db.Candidate.Add(candidate);
-            var sk = await db.Skill
-              .Where(x => x.SkillId != 1 && x.Filter)
+            var skills = await db.Skill
+              .Where(x => x.SkillId != AllSkills && x.Filter)
               .ToListAsync();
 
-            db.AddRange(sk.Select(x => new CandidateSkill
+            db.AddRange(skills.Select(x => new CandidateSkill
             {
                 Candidate = candidate,
                 Skill = x
@@ -67,9 +71,9 @@ namespace GeekHunters.Controllers
         {
             if (id == null) return NotFound();
 
-            var cd = new Candidate { CandidateId = (int)id };
-            db.Attach(cd);
-            db.Remove(cd);
+            var candidate = new Candidate { CandidateId = (int)id };
+            db.Attach(candidate);
+            db.Remove(candidate);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
